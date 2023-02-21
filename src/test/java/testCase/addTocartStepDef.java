@@ -1,46 +1,47 @@
 package testCase;
 
+import ReuseableFunction.schronyzationScript;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import pageObject.HomePage;
-import pageObject.LoginPage;
-import pageObject.ProductPage;
-import pageObject.UserAccount;
+import pageObject.*;
 import util.configReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static diverInit.Initializing_Driver.ldriver;
 
 public class addTocartStepDef {
 
-    public configReader cr;
+    public configReader cr = new configReader();
 
     public LoginPage lp = new LoginPage(ldriver);
     public UserAccount ua = new UserAccount(ldriver);
     public ProductPage pp = new ProductPage(ldriver);
     public HomePage hp =new HomePage(ldriver);
 
+    public Properties pro = new Properties();
+    public schronyzationScript ss = new schronyzationScript(ldriver);
+    public shoppingCart sc = new shoppingCart(ldriver);
+
 
     @Given("user is at landing page")
     public void user_is_at_landing_page() {
-
         try {
-            cr = new configReader("dev");
+            pro = cr.readEnviroment("prod");
+            String url = pro.getProperty("Url");
+            ldriver.get(url);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        String devUrl = cr.getUrl();
-        ldriver.get(devUrl);
-
     }
+
     @Given("user proceed to Login link")
     public void user_proceed_to_login_link() {
         hp.ClickOnSiginInLink();
@@ -54,50 +55,42 @@ public class addTocartStepDef {
     }
     @When("User adds items to the cart")
     public void user_adds_items_to_the_cart() {
-        try {
-            JavascriptExecutor js = (JavascriptExecutor) ldriver;
-            js.executeScript("window.scrollBy(0,250)", "");
-            Thread.sleep(4000);
-            pp.dressSize();
-            pp.SelectColour();
-            pp.addToCart();
-            Thread.sleep(5000);
-            pp.selectSize1();
-            pp.Selectcolour1();
-            pp.Addtocart1();
+        ss.waitForLoad(3);
+        JavascriptExecutor js = (JavascriptExecutor) ldriver;
+        js.executeScript("window.scrollBy(0,250)", "");
 
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        pp.dressSize();
+        pp.SelectColour();
+        pp.addToCart();
+        ss.waitForLoad(2);
+        pp.selectSize1();
+        pp.Selectcolour1();
+        pp.Addtocart1();
+
     }
     @When("user clicks on Shopping cart")
     public void user_clicks_on_shopping_cart() {
-        try {
-            Thread.sleep(3000);
-            pp.ShoppingCartIcon();
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        ss.waitForLoad(2);
+        pp.ShoppingCartIcon();
 
     }
     @Then("Valadating items number")
     public void valadating_items_number() {
-        List<WebElement> addeditems = ldriver.findElements(By.xpath("//*[contains(@data-bind,'attr: {href: product_url}, html: product_name')]"));
+        List<WebElement> addeditems = sc.listOfProduct();
         ArrayList<String> str = new ArrayList<>();
         for (WebElement listItems : addeditems) {
             String s = listItems.getText();
             str.add(s);
         }
-        WebElement noOfItems= ldriver.findElement(By.xpath("//header/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/span[1]"));
-        String stt = noOfItems.getText();
+
+        String stt = sc.NumOfItems();
         int number = Integer.parseInt(stt);
 
         int i = str.size();
         Assert.assertEquals(i,number );
         System.out.println("TC_03 passed");
-        System.out.println(str.get(0));
-        System.out.println(str.get(1));
+        System.out.println("Number of item added:"+ i);
+
     }
 
 }

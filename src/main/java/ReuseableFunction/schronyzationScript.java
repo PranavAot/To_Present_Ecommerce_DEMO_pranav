@@ -18,7 +18,7 @@ public class schronyzationScript {
 
     }
 
-    public void waitForPageLoad(long Seconds)  {
+    public void waitForLoad(long Seconds)  {
        try {
         Thread.sleep(Seconds*1000);
     } catch (InterruptedException e) {
@@ -26,9 +26,13 @@ public class schronyzationScript {
     }
 }
 
-    public void waitForElement(WebDriver driver, WebElement element){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    public void waitForElement(int time, WebElement element){
+        WebDriverWait wait = new WebDriverWait(ldriver, Duration.ofSeconds(time));
         wait.until(ExpectedConditions.visibilityOf(element));
 
+    }
+
+    public void waitForPageLoad(int timeout){
+        ldriver.manage().timeouts().scriptTimeout(Duration.ofSeconds(timeout));
     }
 }

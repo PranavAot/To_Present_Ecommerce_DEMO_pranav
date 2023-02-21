@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
 
 
 public class shippingPage {
@@ -38,31 +37,29 @@ public class shippingPage {
     @FindBy(xpath = "//*[@class='input-text'][@name='company']")
     WebElement Company;
 
-    public void Company(String c){
-       String com =c;
-        Company.sendKeys(com);
+    public void company(String company){
+        Company.sendKeys(company);
 
     }
     @FindBy(xpath = "//*[@class='input-text'][@name='street[0]']")
     WebElement StreetAddress;
 
-    public void StreetAddress(String add){
-        StreetAddress.sendKeys(add);
+    public void StreetAddress(String Address){
+         StreetAddress.sendKeys(Address);
 
     }
     @FindBy(xpath = "//*[@class='input-text'][@name='city']")
     WebElement city;
 
-    public void city(String town){
-        city.sendKeys(town);
+    public WebElement city(String city){
+        return city(city);
 
     }
     @FindBy(xpath = "//*[@class='input-text'][@name='region']")
     WebElement state;
 
-    public void State(){
-        Select provinance = new Select(state);
-        provinance.selectByIndex(4);
+    public WebElement State(){
+        return state;
     }
     @FindBy(xpath = "//*[@class='input-text'][@name='postcode']")
     WebElement zip;
@@ -74,16 +71,16 @@ public class shippingPage {
     @FindBy(xpath = "//*[@class='input-text'][@name='country_id']")
     WebElement Countryid;
 
-    public void Countryid() {
-        Select country = new Select(Countryid);
-        country.selectByIndex(2);
+    public WebElement Countryid() {
+        return Countryid;
     }
 
     @FindBy(xpath = "//*[@class='input-text'][@name='telephone']")
     WebElement Contact;
 
-    public void Contact(String ph) {
-        Contact.sendKeys(ph);
+    public WebElement Contact() {
+        return Contact;
+
 
     }
     @FindBy(xpath = "//*[@class='radio'][@name='ko_unique_2']")
@@ -104,11 +101,17 @@ public class shippingPage {
     @FindBy(xpath="//*[@class='action primary checkout'][@title='Place Order']")
     WebElement placeOrder;
 
-    public void placeorder(){
-        placeOrder.click();
+    public WebElement placeorder(){
+        return placeOrder;
 
     }
 
+    @FindBy(xpath ="//a[@class ='order-number']/strong[1]")
+    WebElement orderid;
+
+    public WebElement Orderid(){
+        return orderid;
+    }
 
 
 

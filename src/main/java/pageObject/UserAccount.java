@@ -34,8 +34,16 @@ public class UserAccount {
             System.out.println(e.getMessage());
         }
     }
+    @FindBy(xpath ="//div[@class='panel header']/ul[1]/li[1]/span[1]")
+    WebElement userProfile;
+
+    public boolean getUserProfile(){
+        return userProfile.isDisplayed();
+    }
 
 
 
 
 }
+
+

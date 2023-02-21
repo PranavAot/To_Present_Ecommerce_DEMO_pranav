@@ -14,27 +14,18 @@ public class Hooks {
 
      public Initializing_Driver init_driver;
 
-      public Properties prop;
-     public configReader config;
+      public Properties pro = new Properties();
+     public configReader cr;
 
 
     @Before(order = 0)
-    public  void selectBrowser(){
+    public  void selectBrowser() throws IOException {
 
-        String env = System.getenv("ENV");
-        if(env==null || env.isEmpty()){
-            env="dev";
-        }
-        configReader config = null;
-        try{
-            config = new configReader(env);
-        }catch (IOException e){
-            throw new RuntimeException(e);
-        }
-        String dbbrowser= config.getBrowser();
-
-        Initializing_Driver init_driver = new Initializing_Driver();
-        ldriver = init_driver.ini_driver(dbbrowser);
+        cr= new configReader();
+        pro =cr.readEnviroment("prod");
+        String browser =  pro.getProperty("Browser");
+        init_driver = new Initializing_Driver();
+        ldriver = init_driver.ini_driver(browser);
 
     }
 

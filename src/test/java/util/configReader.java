@@ -1,39 +1,46 @@
 package util;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
 public class configReader {
-    private Properties properties;
 
-    public configReader(String env)throws IOException{
+    private Properties properties;
+    private FileInputStream fileInputStream;
+    public Properties readEnviroment(String environment) throws IOException {
+//        String environment = System.getProperty("env");
+
+        if (environment == null) {throw new IllegalArgumentException("Environment is not provided");
+        }
+
+        String propertiesFilePath = "src/main/resources/Properties/" + environment + "-config.properties";
+
+        File propertiesFile = new File(propertiesFilePath);
+        if (!propertiesFile.exists()) {
+            throw new FileNotFoundException("Properties file not found for environment: " + environment);
+        }
 
         properties = new Properties();
-
-        String fileName = env + "-config.properties";
-
-        try(FileInputStream input = new FileInputStream(fileName)){
-            properties.load(input);
+        try {
+            fileInputStream = new FileInputStream(propertiesFile);
+            properties.load(fileInputStream);
         } catch (IOException e) {
-
-            System.err.println("Could not read"+fileName+",fallling back to dev-config.properties");
-
-            String filename =  "C:\\Users\\PRANACHO\\Desktop\\automation project\\Intilij\\Ecommerce_DEMO_pranav\\src\\main\\resources\\Properties\\dev-config.properties";
-            try(FileInputStream input = new FileInputStream(filename)) {
-                properties.load(input);
+            try {
+                throw new IOException("Unable to load properties file for environment: " + environment, e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            if (fileInputStream != null) {
+                fileInputStream.close();
             }
         }
-    }
 
-    public String getBrowser(){
-        return properties.getProperty("Browser");
+        return properties;
 
-    }
-    public String getUrl(){
-        return properties.getProperty("Url");
 
     }
-
-
 }
