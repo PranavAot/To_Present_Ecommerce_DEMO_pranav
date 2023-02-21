@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="3" time="59.92">
+    <testcase classname="Testing  Login functionality" name="Login experience with vaild credential" time="17.338">
+        <system-out><![CDATA[Given user is on landing page...............................................passed
+And user proceeds to Login link.............................................passed
+When user provides "Credential" and "user1".................................passed
+Then user is on HomePage....................................................passed
+]]></system-out>
+    </testcase>
+    <testcase classname="Shopping Cart" name="to verify that items are added to cart section" time="18.649">
+        <system-out><![CDATA[Given user is at landing page...............................................passed
+And user proceed to Login link..............................................passed
+When User Search for Product................................................passed
+And User adds items to the cart.............................................passed
+And user clicks on Shopping cart............................................passed
+Then Valadating items number................................................passed
+]]></system-out>
+    </testcase>
+    <testcase classname="Shopping Cart" name="to verify the total price of the cart" time="23.62">
+        <system-out><![CDATA[Given user at  landing page.................................................passed
+When user search for product................................................passed
+And User add items to the cart..............................................passed
+And user click on Shopping cart.............................................passed
+Then user validates the price and quantity..................................passed
+]]></system-out>
+    </testcase>
+</testsuite>
